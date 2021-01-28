@@ -1,8 +1,9 @@
 resource "random_pet" "other-pet" {
   prefix = "Mr"
-  length = "1"
+  length = "2"
   separator = "."
 }
+
 
 variable "prefix" {
   default = ["apple", "banana"]
@@ -19,3 +20,4 @@ variable "userslist" {
   type = list(string)
   default = ["tom", "jerry", "pluto", "daffy", "tom", "jerry"]
 }
+

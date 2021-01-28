@@ -1,3 +1,4 @@
+/*
 resource "local_file" "cars" {
   filename = var.filename
   count = 3
@@ -14,7 +15,7 @@ variable "filename" {
   ]
   type = list(string)
 }
-
+*/
 
 /*
 resource "local_file" "test" {
@@ -30,7 +31,9 @@ variable "filename" {
   ]
   type = list(string)
 }
+*/
 
+/*
 # For each 
 resource "local_file" "test" {
   filename = each.value
@@ -46,7 +49,9 @@ variable "filename" {
   type = list(string)
 }
 
+*/
 
+/*
 # First trype 
 resource "local_file" "test" {
   filename = each.value
@@ -62,7 +67,9 @@ variable "filename" {
   type = set(string)
 }
 
+*/
 
+/*
 # Second trype 
 resource "local_file" "test" {
   filename = each.value

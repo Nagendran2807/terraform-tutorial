@@ -1,6 +1,7 @@
 # Declare the aws provider
 provider "aws" {
   region = var.aws_region
+  profile = "testing"
 }
 
 # Create a random id

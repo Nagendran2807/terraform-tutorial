@@ -1,9 +1,9 @@
-resource "local_file" "jedi" {
-     filename = var.jedi["filename"]
-     content = var.jedi["content"]
+resource "local_file" "test" {
+     filename = var.file["filename"]
+     content = var.file["content"]
 }
 
-variable "jedi" {
+variable "file" {
   type = map(string)
   default = {
     "filename" = "test.txt"

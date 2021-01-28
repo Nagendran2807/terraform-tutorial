@@ -1,4 +1,4 @@
-resource "local_file" "jedi" {
+resource "local_file" "testing" {
      filename = var.filename
      content = "welcome everyone"
 }

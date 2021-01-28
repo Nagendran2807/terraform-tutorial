@@ -1,13 +1,13 @@
 resource "local_file" "pet" {
     filename = "petx.txt"
     content = "we love pets"
-    file_permission = "0700"
+    #file_permission = "0600"
   
   lifecycle {
-    create_before_destroy = true 
+    # create_before_destroy = true 
     # ignore_changes = [ filename, content ]
     # ignore_changes = all
-    # prevent_destroy = true
+    prevent_destroy = true
   }
 
 }
