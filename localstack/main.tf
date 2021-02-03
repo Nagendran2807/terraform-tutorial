@@ -10,13 +10,14 @@ provider "aws" {
   insecure                    = true
   region                      = "us-west-1"
 
-# endpoints {
-#   sqs = "http://${var.localHostName}:4566"
-# }
-
 endpoints {
-  sqs = "http://${var.localHostName}:4576"
+  sqs = "http://${var.localHostName}:4566"
+  ec2 = "http://${var.localHostName}:4566"
 }
+
+# endpoints {
+#   sqs = "http://${var.localHostName}:4576"
+# }
 
 }
 #   endpoints {
@@ -39,9 +40,14 @@ endpoints {
 #     ssm            = "http://${var.localHostName}:4583"
 #     stepfunctions  = "http://${var.localHostName}:4585"
 #     sts            = "http://${var.localHostName}:4592"
+#     ec2            = "http://${var.localHostName}:4597"
 #   }
 # }
 
 variable "localHostName" {
   default = "localhost"
 }
+
+# aws ec2 run-instances --image-id=ami-07dd19a7900a1f049 --count 1 --instance-type t2.micro  --endpoint-url=http://localhost:4566
+# aws ec2 create-tags --resources <instance-id> --tags Key=Name,Value=CliInstance
+# aws ec2 describe-instances --filters "Name=tag:Name,Values=CliInstance"

@@ -13,7 +13,7 @@ resource "random_pet" "my-pet" {
 
 /*
 output "pet-id" {
-  pet-name = random_pet.my-pet.id
+  value = random_pet.my-pet.id
   description = "Diaply pet name"
 }
 */
@@ -39,12 +39,12 @@ variable "length" {
 ##### Explicit dependency #######
 resource "local_file" "pet" {
   filename = var.filename
-  depends_on = [ random_pet.my-pet.id ]
+  depends_on = [ random_pet.my-pet ]
 }
 
 resource "random_pet" "my-pet" {
-  prefix = var.prefix 
-  seperator = var.seperator
+  prefix = var.prefix
+  separator = var.seperator
   length = var.length
 }
 */
