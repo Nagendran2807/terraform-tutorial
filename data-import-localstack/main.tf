@@ -14,11 +14,6 @@ data "local_file" "sample" {
 
 
 ######## import section ###########
-provider "aws" {
-    region = "us-east-1"
-    profile = "aws"
-}
-
 
 resource "aws_instance" "webserver" {
   ami = "ami-07dd19a7900a1f049"
@@ -39,7 +34,6 @@ resource "aws_instance" "webserver" {
 output "instance-ids" {
     value = aws_instance.webserver.public_ip
 }
-#
 
 /*
 resource "aws_instance" "webnew" {
@@ -52,5 +46,7 @@ resource "aws_instance" "webnew" {
 }
 */
 
+
+
 ## import ##
-#terraform import aws_instance.webnew i-944e00ef886a0c927
+#terraform import aws_instance.web i-004aefd1b489bd4c6

@@ -1,0 +1,95 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "AWS template to launch ec2 instance",
+    "Parameters": {
+        "InstanceTypeParameter" : {
+            "Type" : "String",
+            "Default" : "t2.micro",
+            "AllowedValues" : ["t2.micro", "m1.small", "m1.xlarge", "m2.xlarge", "m2.2xlarge", "m2.4xlarge", "m3.xlarge", "m3.2xlarge", "c1.medium", "c1.xlarge"],
+            "ConstraintDescription": "must be a valid EC2 instance type"
+        },
+
+        "KeyName" : {
+            "Description" : "EC2 Key Pair for SSH Access",
+            "Type": "AWS::EC2::KeyPair::KeyName",
+            "Default" : "testing",
+            "MinLength": "1",
+            "MaxLength": "64",
+            "AllowedPattern" : "[-_ a-zA-Z0-9]*",
+            "ConstraintDescription" : "can contain only alphanumeric characters, spaces, dashes and underscores."
+        }            
+    },
+    "Mappings": {
+        "AWSInstanceMapping" : {
+            "t2.micro"    : { "Arch" : "64" },
+            "t2.small"    : { "Arch" : "64" },
+            "t2.medium"   : { "Arch" : "64" },
+            "t2.large"    : { "Arch" : "64" },
+            "m3.medium"   : { "Arch" : "64" },
+            "m4.large"    : { "Arch" : "64" },
+            "m4.xlarge"   : { "Arch" : "64" },
+            "m4.2xlarge"  : { "Arch" : "64" }
+          },
+      
+          "ResgionArchAMI": {
+              "us-east-1": {
+                  "32": "",
+                  "64": "ami-00eb20669e0990cb4"
+              },
+              "us-east-2": {
+                  "32": "",
+                  "64": "ami-0c64dd618a49aeee8"
+              },
+              "us-west-1": {
+                  "32": "",
+                  "64": "ami-7a85a01a"
+              }
+          }
+    },
+
+    "Resources": {
+        "SampleEC2": {
+            "Type": "AWS::EC2::Instance",
+            "Properties": {
+                "ImageId": { "Fn::FindInMap": [ "ResgionArchAMI", { "Ref": "AWS::Region" }, { "Fn::FindInMap": [ "AWSInstanceMapping", { "Ref": "InstanceTypeParameter" }, "Arch" ] } ] },                
+                "InstanceType": { "Ref": "InstanceTypeParameter" },
+                "KeyName": { "Ref": "KeyName" },
+                "SecurityGroupIds": [{ "Ref": "InstanceSG" }],
+                "UserData": { "Fn::Base64" : { "Fn::Join" : ["", [
+                    "#!/bin/bash -xe\n",
+                    "sudo yum update -y\n",
+                    "sudo yum install nginx -y\n",
+                    "sudo chkconfig nginx on\n",
+                    "sudo /etc/init.d/nginx start\n",
+                    "echo 'welcome to DevOps World' > /usr/share/nginx/html/index.html\n"               
+                ]]}},                
+                "Tags": [
+                    { "Key": "FullName", "Value": { "Fn::Join": [ "-", [{ "Ref":"AWS::StackName" }, "webserver1" ]]} },
+                    { "Key": "Name", "Value": "SampleEC2" },
+                    { "Key": "env", "Value": "stage" }
+                ]
+            }            
+        },
+
+        "InstanceSG": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupDescription": "Allows SSH and http and https ports",
+                "SecurityGroupIngress": [
+                    {
+                        "CidrIp": "0.0.0.0/0",
+                        "FromPort": "80",
+                        "IpProtocol": "tcp",
+                        "ToPort": "80"
+                    }                 
+                ],
+                "Tags": [
+                    { "Key": "FullName", "Value": { "Fn::Join": [ "-", [{ "Ref":"AWS::StackName" }, "WebserverSG" ]]} },
+                    { "Key": "Name", "Value": "SampleSG" },
+                    { "Key": "env", "Value": "stage" }
+                ]
+            }            
+        }
+    }
+}
+

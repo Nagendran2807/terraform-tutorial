@@ -1,5 +1,5 @@
 provider "aws" {
-  profile                     = "default"
+  profile                     = "localstack"
   access_key                  = "mock_access"
   secret_key                  = "mock_key"
   skip_credentials_validation = true
@@ -8,7 +8,7 @@ provider "aws" {
   skip_requesting_account_id  = true
   skip_region_validation      = true
   insecure                    = true
-  region                      = "us-west-1"
+  region                      = "us-east-1"
 
   endpoints {
     apigateway     = "http://${var.localHostName}:4566"
