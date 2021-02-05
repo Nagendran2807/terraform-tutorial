@@ -1,12 +1,12 @@
-
-######## Data section ###########
 /*
+######## Data section ###########
+
 resource "local_file" "data-test" {
   filename = "./pets.txt"
   content = data.local_file.sample.content
 }
 
-/*
+
 data "local_file" "sample" {
   filename = "./dogs.txt"
 }
@@ -14,19 +14,25 @@ data "local_file" "sample" {
 
 
 ######## import section ###########
+provider "aws" {
+    region = "us-east-1"
+    profile = "testing"
+}
+
 
 resource "aws_instance" "webserver" {
-  ami = "ami-07dd19a7900a1f049"
+  ami = "ami-03c5cc3d1425c6d34"
   instance_type = "t2.micro"
   user_data = <<-EOF
             #!/bin/bash
-            sudo apt update -y
-            sudo apt install nginx -y            
+            sudo yum update -y
+            sudo yum install nginx -y
+            sudo systemctl enable nginx            
             sudo systemctl start nginx
             EOF
   tags = {
-    "Name" = "TerraformMachine"
-    "env"  = "stage"
+    "Name" = "TerraformEC2"
+    "Env"  = "stage"
   }
 }
 
@@ -34,10 +40,10 @@ resource "aws_instance" "webserver" {
 output "instance-ids" {
     value = aws_instance.webserver.public_ip
 }
-
+#
 /*
 resource "aws_instance" "webnew" {
-  ami = "ami-0a36eb8fadc976275"
+  ami = "ami-00eb20669e0990cb4"
   instance_type = "t2.micro"
   tags = {
     "Name" = "Sample"
@@ -46,7 +52,7 @@ resource "aws_instance" "webnew" {
 }
 */
 
-
-
 ## import ##
 #terraform import aws_instance.web i-004aefd1b489bd4c6
+#aws ec2 describe-instances --query 'Reservations[*].Instances[*].[InstanceId,Tags[?Key==`Name`].Value[0],State.Name,PrivateIpAddress,PublicIpAddress]' --output text
+

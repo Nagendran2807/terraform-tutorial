@@ -1,7 +1,7 @@
 # Declare the aws provider
 provider "aws" {
   region = var.aws_region
-  profile = "testing"
+  profile = "aws-test"
 }
 
 # Create a random id
@@ -21,7 +21,8 @@ resource "aws_s3_bucket" "tf_code" {
   }
 }
 
-# terraform workspace new dev 
+# terraform workspace new dev
+# export AWS_PROFILE=aws-test
 # terraform workspace list
 # terraform workspace select prod 
 # terraform workspace delete 

@@ -8,7 +8,7 @@ variable "project_name" {
 }
 
 variable "aws_region" {
-  default = "us-west-2"
+  default = "us-east-1"
 }
 
 variable "env" {

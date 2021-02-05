@@ -16,22 +16,23 @@ data "local_file" "sample" {
 ######## import section ###########
 provider "aws" {
     region = "us-east-1"
-    profile = "aws"
+    profile = "aws-test"
 }
 
 
 resource "aws_instance" "webserver" {
-  ami = "ami-07dd19a7900a1f049"
+  ami = "ami-047a51fa27710816e"
   instance_type = "t2.micro"
   user_data = <<-EOF
             #!/bin/bash
-            sudo apt update -y
-            sudo apt install nginx -y            
+            sudo yum update -y
+            sudo yum install nginx -y
+            sudo systemctl enable nginx            
             sudo systemctl start nginx
             EOF
   tags = {
-    "Name" = "TerraformMachine"
-    "env"  = "stage"
+    "Name" = "TerraformEC2"
+    "Env"  = "stage"
   }
 }
 
